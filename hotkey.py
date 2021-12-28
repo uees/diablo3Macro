@@ -1,43 +1,42 @@
-import threading
+import keyboard
 
-from pynput import keyboard
+from core import BOT_SWITCH
+from logger import logger
+from settings import HOT_KEY
 
-from army import ZhuDongSanGuang
-from core import state
 
+class Hotkey(object):
 
-class Hotkey(threading.Thread):
-    def __init__(self, name):
-        super().__init__(name=name)
-        self.listener = None
+    def __init__(self, bot):
+        self.is_running = False
+        self.bot = bot
+        self.bot.daemon = True
+        self.bot.start()
+
+    def toggle(self):
+        self.is_running = not self.is_running
+        if BOT_SWITCH.is_set():
+            BOT_SWITCH.clear()
+        else:
+            BOT_SWITCH.set()
 
     def run(self):
-        self.listener = keyboard.GlobalHotKeys({
-            '<f1>': self.on_f1,
-            '<ctrl>+<alt>+i': self.on_activate_i,
-            '<ctrl>+<esc>': self.terminate,
-        })
-        self.listener.start()
-        self.listener.join()
+        logger.info(f"脚本启用状态：{BOT_SWITCH.is_set()}")
+        self.start()
+        keyboard.wait()
 
-    def terminate(self):
-        self.listener.stop()
+    def start(self):
+        keyboard.add_hotkey(HOT_KEY, self.handle)
 
-    def on_f1(self):
-        # 正在运行 则 关闭
-        if state.is_run and state.name == ZhuDongSanGuang.__name__:
-            state.is_run = False
-            return
+    def restart(self):
+        keyboard.unhook_all()
+        self.start()
 
-        print(f"run {ZhuDongSanGuang.__name__}")
+    def handle(self):
+        if not self.is_running:
+            logger.info(f"running {self.bot.name} {self.bot.__module__}")
+        else:
+            self.restart()
 
-        # 设置 State
-        state.is_run = True
-        state.name = ZhuDongSanGuang.__name__
-
-        bot = ZhuDongSanGuang(name=ZhuDongSanGuang.__name__)
-        bot.setDaemon(True)
-        bot.start()
-
-    def on_activate_i(self):
-        print('<ctrl>+<alt>+i pressed')
+        self.toggle()
+        logger.info(f"脚本启用状态：{BOT_SWITCH.is_set()}")

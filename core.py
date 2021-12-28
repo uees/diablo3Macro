@@ -1,15 +1,10 @@
 import asyncio
 import threading
 
+BOT_SWITCH = threading.Event()
+
 
 class BaseAsyncBot(threading.Thread):
-
-    def __init__(self, name: str):
-        super().__init__(name=name)
-
-    @property
-    def is_run(self):
-        return state.name == self.__class__.__name__ and state.is_run
 
     def run(self):
         self.run_loop()
@@ -28,12 +23,3 @@ class BaseAsyncBot(threading.Thread):
         tasks = self.get_tasks()
         loop.run_until_complete(asyncio.wait(tasks, return_when=asyncio.ALL_COMPLETED))
         loop.close()
-
-
-class BotState(object):
-    def __init__(self, name: str, is_run: bool):
-        self.name = name
-        self.is_run = is_run
-
-
-state = BotState(None, False)

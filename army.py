@@ -1,25 +1,24 @@
 import asyncio
-from pynput.keyboard import Controller
+import keyboard
 
-from core import BaseAsyncBot
-
-
-keyboard = Controller()
+from core import BaseAsyncBot, BOT_SWITCH
 
 
-class ZhuDongSanGuang(BaseAsyncBot):
+class PressKey(BaseAsyncBot):
     """主动三光"""
 
     async def task_press_2(self):
-        while self.is_run:
+        while BOT_SWITCH.is_set():
             await asyncio.sleep(0.11)
-            keyboard.press('2')
-            await asyncio.sleep(0.172)
-            keyboard.release('2')
+            keyboard.press_and_release('2')
+
+        BOT_SWITCH.wait()
+        await self.task_press_2()
 
     async def task_press_4(self):
-        while self.is_run:
+        while BOT_SWITCH.is_set():
             await asyncio.sleep(0.12)
-            keyboard.press('4')
-            await asyncio.sleep(0.212)
-            keyboard.release('4')
+            keyboard.press_and_release('4')
+
+        BOT_SWITCH.wait()
+        await self.task_press_4()
