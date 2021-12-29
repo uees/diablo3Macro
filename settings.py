@@ -1,1 +1,1 @@
-HOT_KEY = "alt+/"
+HOT_KEY = "F2"
