@@ -2,6 +2,7 @@ import asyncio
 import threading
 
 BOT_SWITCH = threading.Event()
+RING_SWITCH = threading.Event()
 
 
 class BaseAsyncBot(threading.Thread):

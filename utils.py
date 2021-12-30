@@ -1,5 +1,9 @@
+import os
+import glob
 import ctypes
 import inspect
+
+from settings import BASE_DIR
 
 
 def _async_raise(tid, exctype):
@@ -19,3 +23,14 @@ def _async_raise(tid, exctype):
 
 def stop_thread(thread):
     _async_raise(thread.ident, SystemExit)
+
+
+def get_all_bots():
+    bots = []
+    for file in glob.glob(f"{BASE_DIR}/bots/*.py"):
+        filename = os.path.basename(file)
+        if filename != "__init__.py":
+            bot, _ = os.path.splitext(filename)
+            bots.append(bot)
+
+    return bots
