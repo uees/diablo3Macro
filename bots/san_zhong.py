@@ -7,21 +7,20 @@ from logger import logger
 
 class PressKey(BaseAsyncBot):
 
-    async def task_press_3(self):
-        """持续劲凤煞"""
+    async def task_press_4(self):
+        """黑人"""
         while BOT_SWITCH.is_set():
-            logger.info("press key 3")
-            keyboard.press_and_release('3')
-            await asyncio.sleep(5.78)
+            keyboard.press_and_release('4')
+            await asyncio.sleep(1)
 
         BOT_SWITCH.wait()
-        await self.task_press_3()
+        await self.task_press_4()
 
     async def task_press_2(self):
+        """回精气"""
         while BOT_SWITCH.is_set():
-            logger.info("press key 2")
             keyboard.press_and_release('2')
-            await asyncio.sleep(5)
+            await asyncio.sleep(1.1)
 
         BOT_SWITCH.wait()
         await self.task_press_2()
