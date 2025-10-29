@@ -1,8 +1,11 @@
+import pygame
 import asyncio
 
-from playsound import playsound
 from core import BaseAsyncBot, RING_SWITCH
 from settings import BASE_DIR
+
+# 初始化pygame mixer
+pygame.mixer.init()
 
 
 class AlmightyRing(BaseAsyncBot):
@@ -16,9 +19,13 @@ class AlmightyRing(BaseAsyncBot):
         duration = 3.5
         cycle = 16
         while RING_SWITCH.is_set():
-            await asyncio.to_thread(playsound, f"{BASE_DIR}/resources/ring_start.mp3")
+            # 使用pygame播放声音
+            sound = pygame.mixer.Sound(f"{BASE_DIR}/resources/ring_start.mp3")
+            sound.play()
             await asyncio.sleep(duration)
-            await asyncio.to_thread(playsound, f"{BASE_DIR}/resources/ring_end.mp3")
+
+            sound = pygame.mixer.Sound(f"{BASE_DIR}/resources/ring_end.mp3")
+            sound.play()
             await asyncio.sleep(cycle - duration)
 
         RING_SWITCH.wait()
