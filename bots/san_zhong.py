@@ -2,10 +2,13 @@ import asyncio
 import keyboard
 
 from core import BaseAsyncBot, BOT_SWITCH
-from logger import logger
 
 
 class PressKey(BaseAsyncBot):
+
+    def __init__(self, cdr):
+        super().__init__()
+        self.cdr = cdr
 
     async def task_press_4(self):
         """黑人"""

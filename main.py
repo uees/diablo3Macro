@@ -9,13 +9,15 @@ def main():
     all_bots = ", ".join(get_all_bots())
     parser = argparse.ArgumentParser()
     parser.add_argument("-b", "--bot", help=f"Available bots: {all_bots}")
+    parser.add_argument(
+        "-c", "--cdr", help="CDR time in seconds", type=float, default=0.2)
     args = parser.parse_args()
 
     h = Hotkey()
     if args.bot:
         try:
             bot_module = __import__(f"bots.{args.bot}", fromlist=('PressKey',))
-            bot = bot_module.PressKey()
+            bot = bot_module.PressKey(cdr=args.cdr)
             h.load_bot(bot)
         except ModuleNotFoundError as e:
             logger.error(e)

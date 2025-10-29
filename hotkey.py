@@ -2,7 +2,7 @@ import keyboard
 from playsound import playsound
 
 from almighty_ring import AlmightyRing
-from core import BOT_SWITCH, RING_SWITCH
+from core import BOT_SWITCH, RING_SWITCH, BaseAsyncBot
 from logger import logger
 from settings import HOT_KEY, RING_KEY, BASE_DIR, EXIT_KEY
 
@@ -13,7 +13,18 @@ class Hotkey(object):
         self.is_running = False
         self.bot = None
 
-    def load_bot(self, bot):
+    def run(self):
+        if self.bot:
+            logger.info(f"脚本启用状态：{BOT_SWITCH.is_set()}")
+            keyboard.add_hotkey(HOT_KEY, self.handle_bots)
+
+        self.load_ring_sound()
+        logger.info(f"全能法戒提示启用状态：{RING_SWITCH.is_set()}")
+        keyboard.add_hotkey(RING_KEY, self.handle_ring)
+
+        keyboard.wait(EXIT_KEY)
+
+    def load_bot(self, bot: BaseAsyncBot):
         self.bot = bot
         self.bot.daemon = True
         self.bot.start()
@@ -32,19 +43,8 @@ class Hotkey(object):
             BOT_SWITCH.set()
             playsound(f"{BASE_DIR}/resources/bot_start.mp3")
 
-    def run(self):
-        if self.bot:
-            logger.info(f"脚本启用状态：{BOT_SWITCH.is_set()}")
-            keyboard.add_hotkey(HOT_KEY, self.handle_bots)
-
-        self.load_ring_sound()
-        logger.info(f"全能法戒提示启用状态：{RING_SWITCH.is_set()}")
-        keyboard.add_hotkey(RING_KEY, self.handle_ring)
-
-        keyboard.wait(EXIT_KEY)
-
     def handle_bots(self):
-        if not self.is_running:
+        if not self.is_running and self.bot is not None:
             logger.info(f"running {self.bot.name} {self.bot.__module__}")
 
         self.toggle()

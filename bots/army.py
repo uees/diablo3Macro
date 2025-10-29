@@ -8,6 +8,10 @@ from core import BaseAsyncBot, BOT_SWITCH
 class PressKey(BaseAsyncBot):
     """主动三光"""
 
+    def __init__(self, cdr):
+        super().__init__()
+        self.cdr = cdr
+
     async def task_press_2(self):
         while BOT_SWITCH.is_set():
             await asyncio.sleep(0.11)

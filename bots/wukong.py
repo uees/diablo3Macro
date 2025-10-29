@@ -8,6 +8,10 @@ from core import BaseAsyncBot, BOT_SWITCH
 class PressKey(BaseAsyncBot):
     """武僧悟空套维持劲风煞效果"""
 
+    def __init__(self, cdr):
+        super().__init__()
+        self.cdr = cdr
+
     async def task_press_3(self):
         """3键绑定劲凤煞"""
         while BOT_SWITCH.is_set():
