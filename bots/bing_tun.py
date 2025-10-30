@@ -26,8 +26,17 @@ class PressKey(BaseAsyncBot):
     # async def task_press_1(self):
     #    pass
 
-    # async def task_press_2(self):
-    #    pass
+    async def task_press_2(self):
+        """战宠"""
+        cd = 30 * (100 - self.cdr) / 100  # cd 45s
+        while BOT_SWITCH.is_set():
+            await asyncio.sleep(0.1)
+            self.keyboard.press('2')
+            self.keyboard.release('2')
+            await asyncio.sleep(cd - 0.1)
+
+        BOT_SWITCH.wait()
+        await self.task_press_2()
 
     async def task_press_3(self):
         """ 蓄势待发 - 集中心智"""
@@ -54,21 +63,11 @@ class PressKey(BaseAsyncBot):
     async def task_press_left(self):
         """ 追踪箭 - 吞噬箭 4s 按一次 维持buff，使用shift+左键组合"""
         while BOT_SWITCH.is_set():
-            try:
-                # 按下shift键
-                self.keyboard.press(keyboard.Key.shift)
-                # 短暂延迟确保按键被正确识别
-                await asyncio.sleep(0.05)
-                # 按下左键
+            # 按下shift键 + 左键
+            with self.keyboard.pressed(keyboard.Key.shift):
                 self.mouse.press(mouse.Button.left)
-                # 短暂延迟
-                await asyncio.sleep(0.05)
-                # 先释放左键
                 self.mouse.release(mouse.Button.left)
-                # 再释放shift键
-                self.keyboard.release(keyboard.Key.shift)
-            except Exception as e:
-                print(f"Error in task_press_left: {e}")
+
             # 每4秒执行一次
             await asyncio.sleep(4)
 
