@@ -64,10 +64,17 @@ class PressKey(BaseAsyncBot):
         """ 追踪箭 - 吞噬箭 4s 按一次 维持buff，使用shift+左键组合"""
         while BOT_SWITCH.is_set():
             # 按下shift键 + 左键
-            with self.keyboard.pressed(keyboard.Key.shift):
-                self.mouse.press(mouse.Button.left)
-                self.mouse.release(mouse.Button.left)
-
+            self.keyboard.press(keyboard.Key.shift)
+            # 短暂延迟确保按键被正确识别
+            await asyncio.sleep(0.05)
+            # 按下左键
+            self.mouse.press(mouse.Button.left)
+            # 短暂延迟
+            await asyncio.sleep(0.05)
+            # 先释放左键
+            self.mouse.release(mouse.Button.left)
+            # 再释放shift键
+            self.keyboard.release(keyboard.Key.shift)
             # 每4秒执行一次
             await asyncio.sleep(4)
 
