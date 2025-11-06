@@ -53,7 +53,7 @@ class PressKey(BaseAsyncBot):
     async def task_press_4(self):
         """ 复仇 - 黑暗之心 0.2s 按一次 维持buff"""
         while BOT_SWITCH.is_set():
-            await asyncio.sleep(0.2)
+            await asyncio.sleep(0.5)
             self.keyboard.press('4')
             self.keyboard.release('4')
 

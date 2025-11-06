@@ -9,10 +9,11 @@ import pygame
 
 class Hotkey(object):
 
-    def __init__(self):
+    def __init__(self, ring12: bool = False):
         self.is_running = False
         self.bot = None
         self.listener = None
+        self.ring12 = ring12
         # 初始化pygame mixer
         pygame.mixer.init()
 
@@ -20,7 +21,7 @@ class Hotkey(object):
         if self.bot:
             logger.info(f"脚本启用状态：{BOT_SWITCH.is_set()}")
 
-        self.load_ring_sound()
+        self.load_ring_sound(self.ring12)
         logger.info(f"全能法戒提示启用状态：{RING_SWITCH.is_set()}")
 
         # 启动键盘监听
@@ -53,8 +54,8 @@ class Hotkey(object):
         self.bot.daemon = True
         self.bot.start()
 
-    def load_ring_sound(self):
-        ring = AlmightyRing()
+    def load_ring_sound(self, ring12: bool):
+        ring = AlmightyRing(self.ring12)
         ring.daemon = True
         ring.start()
 
