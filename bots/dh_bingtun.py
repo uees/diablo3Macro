@@ -4,7 +4,7 @@ from core import BaseAsyncBot
 
 
 class PressKey(BaseAsyncBot):
-    """恐惧冰吞
+    """恐惧冰吞 python main.py -b dh_bingtun -c 30
     1: 烟幕弹 - 飘忽不定
     2: 战宠 - 恶狼战宠
     3: 蓄势待发 - 集中心智

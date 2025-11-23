@@ -4,7 +4,7 @@ from core import BaseAsyncBot
 
 
 class PressKey(BaseAsyncBot):
-    """ 辅助猎魔人
+    """ 辅助猎魔人 python main.py -b dh_fz -c 30
     1. 烟幕弹 - 飘忽不定
     2. 战宠 - 恶狼战宠
     3. 多重射击 - 狂风冻结
